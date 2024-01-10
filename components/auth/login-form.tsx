@@ -91,7 +91,6 @@ export const LoginForm = () => {
           >
             Login <FiLogIn className="ml-2" size={20} />
           </Button>
-          <Separator />
         </form>
       </Form>
     </CardWrapper>
