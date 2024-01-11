@@ -14,9 +14,9 @@ export const Header = ({ label }: HeaderProps) => {
         sizes="100vw"
         height={0}
         width={0}
-        className="h-auto w-40"
+        className="h-auto w-32"
       />
-      <p className="mx-auto w-full px-6 font-light text-muted-foreground md:max-w-xl text-center">
+      <p className="mx-auto w-full px-6 font-light text-muted-foreground md:max-w-xl text-center text-sm">
         {label}
       </p>
     </div>

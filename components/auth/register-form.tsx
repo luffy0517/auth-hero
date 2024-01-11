@@ -3,7 +3,7 @@ import * as z from "zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "@/schemas";
+import { RegisterSchema } from "@/schemas";
 import {
   Form,
   FormControl,
@@ -16,32 +16,33 @@ import {
 import { CardWrapper } from "./card-wrapper";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { FiLogIn } from "react-icons/fi";
+import { TbUserPlus } from "react-icons/tb";
 import { Separator } from "../ui/separator";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { login } from "@/actions/login";
+import { register } from "@/actions/register";
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
+      name: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      login(values).then((data) => {
+      register(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
       });
@@ -50,14 +51,33 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Bem-vindo ao AuthHero - Faça login para acessar sua conta"
-      backButtonLabel="Não possui uma conta? Registre-se agora"
-      backButtonHref="/auth/register"
+      headerLabel="Registre-se e aproveite todos os incríveis recursos da AuthHero hoje mesmo"
+      backButtonLabel="Já possui uma conta? Faça login agora"
+      backButtonHref="/auth/login"
       showSocial
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <div className="space-y-2">
+          <div className="space-y-">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Nome</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="Insira o seu nome"
+                      autoComplete="off"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="email"
@@ -107,7 +127,7 @@ export const LoginForm = () => {
             className="w-full"
             disabled={isPending}
           >
-            Login <FiLogIn className="ml-2" size={20} />
+            Registrar <TbUserPlus className="ml-2" size={20} />
           </Button>
         </form>
       </Form>
