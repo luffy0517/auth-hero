@@ -1,5 +1,6 @@
 "use client";
 import * as z from "zod";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/schemas";
@@ -19,8 +20,14 @@ import { FiLogIn } from "react-icons/fi";
 import { Separator } from "../ui/separator";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
+import { login } from "@/actions/login";
 
 export const LoginForm = () => {
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -30,7 +37,15 @@ export const LoginForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    console.log(values);
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      login(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
+    });
   };
 
   return (
@@ -52,6 +67,7 @@ export const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      disabled={isPending}
                       type="email"
                       placeholder="Insira o seu email..."
                       autoComplete="off"
@@ -71,6 +87,7 @@ export const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      disabled={isPending}
                       type="password"
                       placeholder="Insira a sua senha..."
                     />
@@ -80,14 +97,15 @@ export const LoginForm = () => {
               )}
             />
           </div>
-          {/* <FormError message="Crendenciais invalidas!"/> */}
-          {/* <FormSuccess message="Email de confirmação enviado!"/> */}
-          
+          <FormError message={error} />
+          <FormSuccess message={success} />
+
           <Button
             type="submit"
             size={"lg"}
             variant={"default"}
             className="w-full"
+            disabled={isPending}
           >
             Login <FiLogIn className="ml-2" size={20} />
           </Button>

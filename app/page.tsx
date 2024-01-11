@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logo from "@/public/logo.png";
 import { Button } from "@/components/ui/button";
-import { FiLogIn } from "react-icons/fi";
+import { TbDoorEnter } from "react-icons/tb";
 import { LoginButton } from "@/components/auth/login-button";
 
 export default function Home() {
@@ -24,7 +24,7 @@ export default function Home() {
         <div className="w-full px-5">
           <LoginButton>
             <Button size={"lg"} variant={"default"} className="w-full">
-              Login <FiLogIn className="ml-2" size={20} />
+              Acessar <TbDoorEnter className="ml-2" size={20} />
             </Button>
           </LoginButton>
         </div>
