@@ -58,7 +58,7 @@ export const RegisterForm = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <div className="space-y-">
+          <div className="space-y-2">
             <FormField
               control={form.control}
               name="name"
@@ -130,6 +130,11 @@ export const RegisterForm = () => {
             Registrar <TbUserPlus className="ml-2" size={20} />
           </Button>
         </form>
+        <div className="flex items-center justify-center gap-2">
+          <Separator className="mt-5 flex flex-1" />
+          <p className="mt-5 flex flex-1 text-xs whitespace-nowrap items-center justify-center">Registrar com</p>
+          <Separator className="mt-5 flex flex-1" />
+        </div>
       </Form>
     </CardWrapper>
   );

@@ -21,6 +21,8 @@ import { FiLogIn } from "react-icons/fi";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
+import Link from "next/link";
+import { Separator } from "../ui/separator";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -62,8 +64,8 @@ export const LoginForm = () => {
       showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <div className="space-y-2">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <div>
             <FormField
               control={form.control}
               name="email"
@@ -99,6 +101,16 @@ export const LoginForm = () => {
                     />
                   </FormControl>
                   <FormMessage className="text-xs" />
+                  <Button
+                    size={"sm"}
+                    variant={"link"}
+                    asChild
+                    className="flex justify-center px-0 font-normal text-black"
+                  >
+                    <Link href="/auth/reset">
+                      Esqueceu sua senha? Clique aqui
+                    </Link>
+                  </Button>
                 </FormItem>
               )}
             />
@@ -116,6 +128,13 @@ export const LoginForm = () => {
             Login <FiLogIn className="ml-2" size={20} />
           </Button>
         </form>
+        <div className="flex items-center justify-center gap-2">
+          <Separator className="mt-5 flex flex-1" />
+          <p className="mt-5 flex flex-1 items-center justify-center whitespace-nowrap text-xs">
+            Fazer login com
+          </p>
+          <Separator className="mt-5 flex flex-1" />
+        </div>
       </Form>
     </CardWrapper>
   );
