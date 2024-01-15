@@ -49,8 +49,7 @@ export const LoginForm = () => {
     startTransition(() => {
       login(values).then((data) => {
         setError(data?.error);
-        // TODO: Adicionar o setsuccess quando for feito a autentificação de 2 fatores
-        // setSuccess(data?.success);
+        setSuccess(data?.success);
       });
     });
   };
