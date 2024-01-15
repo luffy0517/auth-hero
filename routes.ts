@@ -3,7 +3,7 @@
  * Não necessita que o usuário esteja logado
  * @type {string[]}
  */
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/", "/auth/new-verification"];
 
 /**
  * Array de rotas usadas para autentificação
