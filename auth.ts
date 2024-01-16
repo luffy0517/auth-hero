@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "./lib/db";
 import authConfig from "./auth.config";
 import { getUserById } from "./data/user";
+import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation";
 
 export const {
   handlers: { GET, POST },
@@ -25,14 +26,29 @@ export const {
     },
   },
   callbacks: {
-    async signIn({ user, account }){
-      if(account?.provider !== 'credentials') return true;
+    async signIn({ user, account }) {
+      if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id);
 
-      if(!existingUser?.emailVerified) return false;
+      if (!existingUser?.emailVerified) return false;
 
-      // TODO: Adicionar 2FA
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          existingUser.id,
+        );
+
+        if (!twoFactorConfirmation) {
+          return false;
+        }
+
+        // Deletar a 2FA em cada login, para que o usuário precise fazer sempre que logar
+        await db.twoFactorConfirmation.delete({
+          where: {
+            id: twoFactorConfirmation.id,
+          },
+        });
+      }
 
       return true;
     },

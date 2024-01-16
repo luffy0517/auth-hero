@@ -23,6 +23,7 @@ import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
 import Link from "next/link";
 import { Separator } from "../ui/separator";
+import { BsShieldLock } from "react-icons/bs";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -31,6 +32,7 @@ export const LoginForm = () => {
       ? "Email já utilizado por outro provedor!"
       : "";
 
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
@@ -49,16 +51,32 @@ export const LoginForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      login(values).then((data) => {
-        setError(data?.error);
-        setSuccess(data?.success);
-      });
+      login(values)
+        .then((data) => {
+          if (data?.error) {
+            form.reset();
+            setError(data?.error);
+          }
+          if (data?.success) {
+            form.reset();
+            setSuccess(data?.success);
+          }
+
+          if (data?.twoFactor) {
+            setShowTwoFactor(true);
+          }
+        })
+        .catch(() => setError("Ocorreu um erro ao fazer login!"));
     });
   };
 
   return (
     <CardWrapper
-      headerLabel="Bem-vindo ao AuthHero - Faça login para acessar sua conta"
+      headerLabel={`${
+        showTwoFactor
+          ? "Favor digitar o código de autenticação de dois fatores  enviado no seu email para prosseguir com o seu login"
+          : "Bem-vindo ao AuthHero - Faça login para acessar sua conta"
+      }`}
       backButtonLabel="Não possui uma conta? Registre-se agora"
       backButtonHref="/auth/register"
       showSocial
@@ -66,54 +84,80 @@ export const LoginForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
           <div>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      type="email"
-                      placeholder="Insira o seu email"
-                      autoComplete="off"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
+            {showTwoFactor && (
+              <FormField
+                control={form.control}
+                name="code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs">
+                      Código de Autentificação
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="Insira o seu código de autentificação"
+                        autoComplete="off"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs" />
+                  </FormItem>
+                )}
+              />
+            )}
+            {!showTwoFactor && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={isPending}
+                          type="email"
+                          placeholder="Insira o seu email"
+                          autoComplete="off"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">Senha</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      type="password"
-                      placeholder="Insira a sua senha"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                  <Button
-                    size={"sm"}
-                    variant={"link"}
-                    asChild
-                    className="flex justify-center px-0 font-normal text-black"
-                  >
-                    <Link href="/auth/reset">
-                      Esqueceu sua senha? Clique aqui
-                    </Link>
-                  </Button>
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">Senha</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={isPending}
+                          type="password"
+                          placeholder="Insira a sua senha"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                      <Button
+                        size={"sm"}
+                        variant={"link"}
+                        asChild
+                        className="flex justify-center px-0 font-normal text-black"
+                      >
+                        <Link href="/auth/reset">
+                          Esqueceu sua senha? Clique aqui
+                        </Link>
+                      </Button>
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
           </div>
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
@@ -125,7 +169,9 @@ export const LoginForm = () => {
             className="w-full"
             disabled={isPending}
           >
-            Login <FiLogIn className="ml-2" size={20} />
+            {showTwoFactor ? "Confirmar" : "Login"}
+            {!showTwoFactor && <FiLogIn className="ml-2" size={20} />}
+            {showTwoFactor && <BsShieldLock className="ml-2" size={20} />}
           </Button>
         </form>
         <div className="flex items-center justify-center gap-2">

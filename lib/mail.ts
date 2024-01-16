@@ -2,6 +2,21 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "Código da Autentificação de 2 Fatores",
+    html: `
+      <p>Olá!</p>
+      <p>Recebemos uma solicitação de código de autentificação de 2 fatores associada a este endereço de e-mail. </p> 
+      <p>Seu token: ${token}
+      <p>Se você não solicitou um código, por favor, ignore este e-mail.</p>
+      <p>Atenciosamente,<br/>AuthHero</p>
+    `,
+  });
+};
+
 export const sendPasswordResetEmail = async (email: string, token: string) => {
   const resetLink = `http://localhost:3000/auth/new-password?token=${token}`;
 
