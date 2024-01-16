@@ -8,13 +8,13 @@ interface ProtectedLayoutProps {
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   return (
     <>
-      <div className="h-full max-h-[15%]">
+      <div className="h-full max-h-[10%]">
         <Header />
       </div>
-      <div className="flex h-full max-h-[70%] w-full flex-col items-center justify-center gap-y-10 bg-[url('/bghome.png')] bg-cover bg-center bg-no-repeat">
+      <div className="flex h-full max-h-[80%] w-full flex-col items-center justify-center gap-y-10 bg-[url('/bghome.png')] bg-cover bg-center bg-no-repeat">
         {children}
       </div>
-      <div className="h-full max-h-[15%]">
+      <div className="h-full max-h-[10%]">
         <Navbar />
       </div>
     </>

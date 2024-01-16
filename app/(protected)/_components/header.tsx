@@ -29,7 +29,7 @@ export const Header = () => {
           sizes="100vw"
           height={0}
           width={0}
-          className="h-auto w-32"
+          className="h-auto w-28"
         />
         <div className="flex gap-x-2">
           <UserButton />
