@@ -6,7 +6,7 @@ import { LoginButton } from "@/components/auth/login-button";
 
 export default function Home() {
   return (
-    <main className="flex h-full flex-col items-center justify-center bg-[url('/bghome.png')] bg-cover bg-center bg-no-repeat">
+    <main className="flex h-auto min-h-screen py-3 flex-col items-center justify-center bg-[url('/bghome.png')] bg-cover bg-center bg-no-repeat">
       <div className="flex flex-col items-center justify-center space-y-6 text-center bg-white mx-5 py-5 rounded-3xl">
         <Image
           src={logo}
