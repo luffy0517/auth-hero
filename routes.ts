@@ -10,7 +10,7 @@ export const publicRoutes = ["/", "/auth/new-verification"];
  * Essas rotas irão redirecionar os usuários logados para /settings
  * @type {string[]}
  */
-export const authRoutes = ["/auth/login", "/auth/register", "/auth/error", "/auth/reset"];
+export const authRoutes = ["/auth/login", "/auth/register", "/auth/error", "/auth/reset", "/auth/new-password"];
 
 /**
  * Prefixo para as rotas de autentificação
