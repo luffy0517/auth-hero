@@ -2,19 +2,8 @@
 
 import Image from "next/image";
 import logo from "@/public/logo.png";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaUsersCog } from "react-icons/fa";
-import { TbServerCog, TbAdjustmentsCog } from "react-icons/tb";
-import { MdAdminPanelSettings } from "react-icons/md";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { UserButton } from "@/components/auth/user-button";
 
 export const Header = () => {
