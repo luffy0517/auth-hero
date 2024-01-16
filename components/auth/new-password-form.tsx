@@ -70,7 +70,7 @@ export const NewPasswordForm = () => {
                       autoComplete="off"
                       disabled={isPending}
                       type="password"
-                      placeholder="Insira a nova senha..."
+                      placeholder="Insira a nova senha"
                     />
                   </FormControl>
                   <FormMessage className="text-xs" />
