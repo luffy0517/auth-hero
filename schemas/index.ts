@@ -1,5 +1,9 @@
 import * as z from "zod";
 
+export const SettingsSchema = z.object({
+  name: z.optional(z.string()),
+});
+
 export const NewPasswordSchema = z.object({
   password: z.string().min(6, {
     message: "A senha deve ter no mínimo 6 caracteres",
@@ -19,7 +23,7 @@ export const LoginSchema = z.object({
   password: z.string().min(1, {
     message: "A senha é obrigatória",
   }),
-  code: z.optional(z.string())
+  code: z.optional(z.string()),
 });
 
 export const RegisterSchema = z.object({
