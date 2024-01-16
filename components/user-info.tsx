@@ -3,12 +3,10 @@ import { ExtendedUser } from "@/next-auth";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+
 import { Badge } from "./ui/badge";
 
 interface UserInfoProps {
