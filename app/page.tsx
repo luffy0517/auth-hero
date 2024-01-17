@@ -6,8 +6,8 @@ import { LoginButton } from "@/components/auth/login-button";
 
 export default function Home() {
   return (
-    <main className="flex h-auto min-h-screen py-3 flex-col items-center justify-center bg-[url('/bghome.png')] bg-cover bg-center bg-no-repeat">
-      <div className="flex flex-col items-center justify-center space-y-6 text-center bg-white mx-5 py-5 rounded-3xl">
+    <main className="flex h-auto min-h-screen flex-col items-center justify-center bg-[url('/bghome.png')] bg-cover bg-center bg-no-repeat py-3">
+      <div className="mx-5 flex flex-col items-center justify-center space-y-6 rounded-3xl bg-white py-5 text-center">
         <Image
           src={logo}
           alt="AuthHero"
@@ -22,7 +22,7 @@ export default function Home() {
         </p>
 
         <div className="w-full px-5">
-          <LoginButton>
+          <LoginButton mode="modal" asChild>
             <Button size={"lg"} variant={"default"} className="w-full">
               Acessar <TbDoorEnter className="ml-2" size={20} />
             </Button>
