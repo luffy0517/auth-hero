@@ -20,6 +20,7 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { LuFileCheck2 } from "react-icons/lu";
@@ -39,6 +40,10 @@ const SettingsPage = () => {
     resolver: zodResolver(SettingsSchema),
     defaultValues: {
       name: user?.name || undefined,
+      email: user?.email || undefined,
+      password: undefined,
+      newPassword: undefined,
+      isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
     },
   });
 
@@ -68,14 +73,17 @@ const SettingsPage = () => {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-              <div>
+              <div className="space-y-3">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-xs">Nome</FormLabel>
-                      <FormDescription>Utilize o campo abaixo para alterar o seu nome no cadastro.</FormDescription>
+                      <FormDescription>
+                        Utilize o campo abaixo para alterar o seu nome no
+                        cadastro
+                      </FormDescription>
                       <FormControl>
                         <Input
                           {...field}
@@ -88,6 +96,102 @@ const SettingsPage = () => {
                     </FormItem>
                   )}
                 />
+
+                {/* <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">Email</FormLabel>
+                      <FormDescription>
+                        Utilize o campo abaixo para alterar o seu email no
+                        cadastro.
+                      </FormDescription>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          autoComplete="off"
+                          disabled={isPending}
+                          placeholder="Insira o novo nome"
+                          type="email"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                /> */}
+
+                {user?.isOAuth === false && (
+                  <div className="grid grid-cols-2 gap-x-2">
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs">Senha</FormLabel>
+
+                          <FormControl>
+                            <Input
+                              {...field}
+                              autoComplete="off"
+                              disabled={isPending}
+                              placeholder="Insira a senha atual"
+                              type="password"
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            Insira a senha atual
+                          </FormDescription>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="newPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs">Nova senha</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              autoComplete="off"
+                              disabled={isPending}
+                              placeholder="Insira a nova senha"
+                              type="password"
+                            />
+                          </FormControl>
+                          <FormDescription>Insira a nova senha</FormDescription>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
+
+                {user?.isOAuth === false && (
+                  <FormField
+                    control={form.control}
+                    name="isTwoFactorEnabled"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <FormLabel>Autenticação de 2 Fatores</FormLabel>
+                          <FormDescription>
+                            Ative a autenticação de 2 fatores para a sua conta
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            disabled={isPending}
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
 
               <FormError message={error} />
